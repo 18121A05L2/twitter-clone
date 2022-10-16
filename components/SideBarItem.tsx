@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { IconType } from 'react-icons';
 
-type Props = {
+type PropsType = {
   Icon: IconType;
   text: string;
   onClick?: () => {} ; 
 }
 
-function SideBarItem({ Icon, text ,onClick}: Props) {
+function SideBarItem({ Icon, text ,onClick}: PropsType) {
   const [active,setActive] = useState(false)
   return (
     <div className='flex '>

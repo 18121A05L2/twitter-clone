@@ -55,7 +55,7 @@ function TweetBox() {
             <HiOutlinePhotograph
               className={styles.icon}
               onClick={() => {
-                filePickerRef?.current?.click();
+                // filePickerRef?.current?.click();
                 console.log("clicked photo icon");
               }}
             >

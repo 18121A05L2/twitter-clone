@@ -23,7 +23,7 @@ const styles = {
   icon : "w-[1.3rem] h-[1.3rem] text-gray-600"
 }
 function DisplayTweets({ post  }:postType ) {
-  // console.log("post" + post.document)
+  console.log("post" + post)
 
   return (
     <div className="flex border-t-[0.1rem] p-2">

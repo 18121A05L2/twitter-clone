@@ -29,17 +29,17 @@ function DisplayTweets({ post  }:postType ) {
     <div className="flex border-t-[0.1rem] p-2">
       <img
         className="w-[3rem] h-[3rem] rounded-full m-1 "
-        src={post.userImage}
+        src={post?.userImage}
       ></img>
       <div className="w-full px-2 ">
         {/* Top  */}
         <section className="flex  items-center ">
           <p>
-            {post.userId} . <Moment fromNow>{post.timeStamp?.toDate()}</Moment>{" "}
+            {post?.userId} . <Moment fromNow>{post?.timeStamp?.toDate()}</Moment>{" "}
           </p>
           <BiDotsHorizontalRounded className="ml-auto w-[1.2rem] h-[1.2rem]" />
         </section>
-        <section className="p-4">{post.userInput}</section>
+        <section className="p-4">{post?.userInput}</section>
         {/* icons */}
         <section className="flex justify-between">
           <FaRegComment className={styles.icon} />

@@ -16,7 +16,7 @@ function SideBarItem({ Icon, text ,onClick}: PropsType) {
           active && "text-blue-700"
         } `}
         // onClick={() => setActive(!active)}
-        onClick={() => onClick?.()}
+        // onClick={() => onClick?.()}
       >
         <Icon className="h-[1.5rem] w-[1.5rem]" />
         <p className="pl-3 group-hover:text-blue-400  hidden lg:inline  ">{text}</p>

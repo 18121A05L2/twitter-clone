@@ -1,6 +1,12 @@
 import { HiOutlineRefresh } from "react-icons/hi";
 import DisplayTweets from "./DisplayTweets";
-import { collection, onSnapshot, orderBy, query, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  Timestamp,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../Firebase";
 import { v4 as uuidv4 } from "uuid";
@@ -8,16 +14,13 @@ import { v4 as uuidv4 } from "uuid";
 import TweetBox from "./TweetBox";
 
 type arrType = {
-    timeStamp: Timestamp;
-    userEmail: string;
-    userId: string;
-    userImage: string;
-    userName: string;
-    userInput: string;
+  timeStamp: Timestamp;
+  userEmail: string;
+  userId: string;
+  userImage: string;
+  userName: string;
+  userInput: string;
 };
-
-
-
 
 function Feed() {
   const [allPosts, setAllPosts] = useState<arrType[]>([] as arrType[]);
@@ -26,7 +29,7 @@ function Feed() {
     const unsubscribe = onSnapshot(
       query(collection(db, "posts"), orderBy("timeStamp", "desc")),
       (snapshot) => {
-        const arr : arrType[] = [];
+        const arr: arrType[] = [];
         snapshot.forEach((doc) => {
           arr.push(doc.data() as arrType);
           console.log(arr);

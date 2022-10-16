@@ -6,7 +6,7 @@ import { FiMail } from "react-icons/fi";
 import { BsBookmark, BsCardList } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { CgMoreO } from "react-icons/cg";
-import SideBarItem from "./SideBarItem";
+import SideBarItem from "./SideBarItem";                                           
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -28,7 +28,7 @@ function SideBar() {
         <SideBarItem Icon={BsBookmark} text="Bookmarks" />
         <SideBarItem Icon={BsCardList} text="Lists" />
         <SideBarItem
-          onClick={session ? signOut : signIn}
+          onClick={session ? signOut : signIn}          
           Icon={HiOutlineUser}
           text="profile"
         />

@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/SideBar.tsx", "pages/api/auth/[...nextauth].js", "Firebase.ts", "components/DisplayTweets.tsx", "components/Feed.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/SideBar.tsx", "pages/api/auth/[...nextauth].ts", "Firebase.ts", "components/DisplayTweets.tsx", "components/Feed.tsx"],
   "exclude": ["node_modules"]
 }

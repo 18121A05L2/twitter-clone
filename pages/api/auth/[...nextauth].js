@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-type clientType = {
-  clientId: string | undefined;
-  clientSecret: string | undefined;
-}
+// type clientType = {
+//   clientId: string | undefined;
+//   clientSecret: string | undefined;
+// }
 
 export const authOptions = {
   // Configure one or more authentication providers

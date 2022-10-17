@@ -20,7 +20,7 @@ type postType = {
   };
 };
 const styles = {
-  icon : "w-[1.3rem] h-[1.3rem] text-gray-600"
+  icon : "w-[1.3rem] h-[1.3rem] text-gray-600 cursor-pointer"
 }
 function DisplayTweets({ post  }:postType ) {
   console.log("post" + post)

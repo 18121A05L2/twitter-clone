@@ -46,7 +46,7 @@ function TweetBox() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           type="text"
-          placeholder={`what's happening ` + session?.user?.name + " ?"}
+          placeholder={`what's happening ` + session?.user?.name?.split(" ")[0] + " ?"}
         ></input>
         <div className="flex justify-between">
           {/* Icons */}

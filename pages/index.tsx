@@ -12,12 +12,12 @@ import { useEffect } from "react";
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  useEffect(() => {
-      if (session) {
-        router.push("/auth/signin");
-      } 
-  }
-  ,[])
+  // useEffect(() => {
+  //     if (!session?.user) {
+  //       router.push("/auth/signin");
+  //     } 
+  // }
+  // ,[])
 
   return (
     <div className=" max-h-screen overflow-hidden  max-w-5xl mx-auto">
@@ -25,20 +25,20 @@ const Home: NextPage = () => {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {session && (
-        <main className="grid grid-cols-9      ">
+      {session ? (
+        <main className="grid grid-cols-9 ">
           <SideBar />
           <Feed />
           <Widgets />
         </main>
-      // ) : (
-      //   <Link href="/auth/signin">
-      //     <div className="flex items-center justify-center min-h-screen">
-      //       <div className=" text-[2rem] p-2 px-6 cursor-pointer bg-twitter rounded-full ">
-      //         Click To Sign In Page Bruh......
-      //       </div>
-      //     </div>
-      //   </Link>
+      ) : (
+        <Link href="/auth/signin">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className=" text-[2rem] p-2 px-6 cursor-pointer bg-twitter rounded-full ">
+              Click To Sign In Page Bruh......
+            </div>
+          </div>
+        </Link>
       )}
     </div>
   );

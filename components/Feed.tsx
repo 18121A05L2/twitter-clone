@@ -20,7 +20,7 @@ type arrType = {
   userImage: string;
   userName: string;
   userInput: string;
-  id: string;
+  // id: string;
 };
 
 function Feed() {
@@ -32,17 +32,16 @@ function Feed() {
       (snapshot) => {
         const arr: arrType[] = [];
         snapshot.forEach((doc) => {
-          console.log(doc.id)
+          // console.log(doc.id)
           let obj = doc.data()
-          console.log(obj)
+          // console.log(obj)
           
           arr.push(doc.data() as arrType);
-          console.log(arr);
+          // console.log(arr);
         });
         setAllPosts(arr);
       }
     );
-
     return unsubscribe;
   }, [db]);
 
@@ -57,7 +56,7 @@ function Feed() {
 
       <TweetBox />
       {allPosts?.map((post) => {
-        console.log("post: " + post.id);
+        // console.log("post: " + post.id);
         return <DisplayTweets key={uuidv4()} post={post} />;
       })}
     </div>

@@ -15,7 +15,7 @@ const styles = {
 
 function TweetBox() {
   const [input, setInput] = useState<string>("");
-  const filePickerRef = useRef(null);
+  // const filePickerRef = useRef(null);
   const { data: session } = useSession();
   console.count(input);
 
@@ -59,7 +59,7 @@ function TweetBox() {
                 console.log("clicked photo icon");
               }}
             >
-              <input ref={filePickerRef} hidden type="file"></input>
+              {/* <input ref={filePickerRef} hidden type="file"></input> */}
             </HiOutlinePhotograph>
 
             <AiOutlineFileGif className={styles.icon} />

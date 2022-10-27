@@ -1,28 +1,33 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Feed from "../components/Feed";
-import SideBar from "../components/SideBar";
-import Widgets from "../components/Widgets";
+import Feed from "../components/Feed/Feed";
+import SideBar from "../components/SideBar/SideBar";
+import Widgets from "../components/Widgets/Widgets";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import CommentModal from "../components/Feed/DisplayTweets/CommentModal";
+import TweetBoxModal from "../components/Feed/TweetBox/TweetBoxModal";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const isUserIdExists = router.query.userId
   // useEffect(() => {
   //     if (!session?.user) {
-  //       router.push("/auth/signin");
-  //     } 
+  //       router.push("/");
+  //     } else {
+  //       router.push("/auth/signin")
+  //     }
   // }
   // ,[])
 
   return (
-    <div className=" max-h-screen overflow-hidden  max-w-5xl mx-auto">
+    <div className=" max-h-screen overflow-hidden  max-w-6xl mx-auto">
       <Head>
-        <title>Create Next App</title>
+        <title>Twitter</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {session ? (
@@ -30,6 +35,8 @@ const Home: NextPage = () => {
           <SideBar />
           <Feed />
           <Widgets />
+          <CommentModal />
+          <TweetBoxModal/>
         </main>
       ) : (
         <Link href="/auth/signin">

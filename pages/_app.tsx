@@ -2,17 +2,23 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-// import { RecoilRoot } from "recoil";
-
+import { Provider } from "react-redux";
+import store from "../Redux/app/store";
+import DataProvider from "../context/DataContext";
 
 // need to learn abot this Session type
-function MyApp({ Component, pageProps: { session  , ...pageProps } }: AppProps<{session : Session}>) {
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) {
   return (
     <SessionProvider session={session}>
-      {/* To keeep our application throught our application */}
-      {/* <RecoilRoot> */}
-        <Component {...pageProps} />
-      {/* </RecoilRoot> */}
+      <Provider store={store}>
+        <DataProvider>
+          {/* To keeep our session throught our application */}
+          <Component {...pageProps} />
+        </DataProvider>
+      </Provider>
     </SessionProvider>
   );
 }

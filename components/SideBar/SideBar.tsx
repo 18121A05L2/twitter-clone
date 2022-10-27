@@ -7,20 +7,27 @@ import { BsBookmark, BsCardList } from "react-icons/bs";
 import { HiOutlineUser } from "react-icons/hi";
 import { CgMoreO } from "react-icons/cg";
 import SideBarItem from "./SideBarItem";
+import Link from "next/link";
+import { tweetBoxModal } from "../../Redux/features/GlobalSlice";
+
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useDispatch } from "react-redux";
 
 function SideBar() {
   const { data: session } = useSession();
+  const dispatch = useDispatch();
   return (
     <div className="col-span-2 h-screen flex flex-col pt-2  ">
-      <div className="flex flex-col gap-1 max-w-[12rem]  ">
-        <img
-          className="h-[3rem] w-[3rem] hover:bg-blue-200 rounded-full p-[0.3rem] ml-4"
-          src="https://links.papareact.com/drq"
-          alt="twitter"
-        ></img>
-        
+      <div className="flex flex-col gap-1 max-w-[12rem] items-center  lg:items-start ">
+        <Link passHref href="/">
+          <img
+            className="h-[3rem] w-[3rem] hover:bg-blue-200 rounded-full p-[0.3rem] ml-4"
+            src="https://links.papareact.com/drq"
+            alt="twitter"
+          ></img>
+        </Link>
+
         <SideBarItem Icon={AiOutlineHome} text="Home" />
         <SideBarItem Icon={IoSearch} text="Search" />
         <SideBarItem Icon={BiHash} text="Explore" />
@@ -28,9 +35,12 @@ function SideBar() {
         <SideBarItem Icon={FiMail} text="Messages" />
         <SideBarItem Icon={BsBookmark} text="Bookmarks" />
         <SideBarItem Icon={BsCardList} text="Lists" />
-        <SideBarItem Icon={HiOutlineUser} text="profile" />
+        <SideBarItem Icon={HiOutlineUser} text="Profile" />
         <SideBarItem Icon={CgMoreO} text="More" />
-        <div className="bg-twitter p-3 flex justify-center items-center rounded-full ">
+        <div
+          onClick={() => dispatch(tweetBoxModal())}
+          className="bg-twitter flex-1 lg:min-w-[15rem] p-3 flex justify-center items-center text-white font-bold rounded-full "
+        >
           Tweet
         </div>
       </div>

@@ -15,6 +15,16 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/SideBar.tsx", "pages/api/auth/[...nextauth].js", "Firebase.ts", "components/DisplayTweets.tsx", "components/Feed.tsx", "pages/auth/signin.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "components/SideBar/SideBar.tsx",
+    "pages/api/auth/[...nextauth].js",
+    "Firebase.ts",
+    "components/Feed/DisplayTweets/DisplayTweets.tsx",
+    "components/Feed/Feed.tsx",
+    "pages/auth/signin.jsx"
+, "Redux/features/DataSlice.js", "pages/[userId]/status/[tweetId].js", "context/DataContext.jsx", "components/Feed/DisplayTweets/Actions.jsx", "components/Feed/DisplayTweets/Like.jsx"  ],
   "exclude": ["node_modules"]
 }

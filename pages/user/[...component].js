@@ -1,7 +1,7 @@
-import React from "react";
-import SideBar from "../../components/SideBar/SideBar";
+import React, { useState } from "react";
+import SideBar from "../../components/SideBar";
 import Profile from "../../components/Profile";
-import Widgets from "../../components/widgets/widgets";
+import Widgets from "../../components/widgets";
 import TweetBoxModal from "../../components/Feed/TweetBox/TweetBoxModal";
 import CommentModal from "../../components/Feed/DisplayTweets/CommentModal";
 import Bookmarks from "../../components/Bookmarks";
@@ -10,12 +10,18 @@ import Explore from "../../components/Explore";
 import Messages from "../../components/Messages";
 import Notifications from "../../components/Notifications";
 import Search from "../../components/Search";
-import Feed from "../../components/Feed/Feed"
-
+import Feed from "../../components/Feed";
 import { useRouter } from "next/router";
+import EditProfileModal from "../../components/EditProfileModal";
+import MessageSearch from "../../components/Messages/MessageSearch";
+
 
 function All() {
+  const router = useRouter();
+  const comp = router?.query?.component && router?.query?.component[0] === "Messages"
+
   const switchComponent = (arg) => {
+    // console.log(" args : " + arg);
     switch (arg) {
       case "Profile":
         return <Profile />;
@@ -35,22 +41,23 @@ function All() {
         return <Feed />;
     }
   };
-  const router = useRouter();
-  const Component = router?.query?.component[0];
-  const Dynamic = {
-    Profile: "<Profile/>",
-  };
-  
-  console.log(router?.query?.component[0]);
-  
+
   return (
     <div className=" max-h-screen overflow-hidden  max-w-6xl mx-auto">
       <main className="grid grid-cols-9 ">
         <SideBar />
-        {switchComponent(Component)}
-        <Widgets />
+        <div className=" col-span-7 lg:col-span-5 border-x-[0.1rem] mr-2 overflow-scroll max-h-screen  ">
+          {" "}
+          {switchComponent(
+            router?.query?.component && router.query.component[0]
+          )}
+        </div>
+
+        {comp ? <MessageSearch /> : <Widgets />}
         <CommentModal />
         <TweetBoxModal />
+        {router?.query?.component &&
+          router.query.component[0] === "Profile" && <EditProfileModal />}
       </main>
     </div>
   );

@@ -1,28 +1,31 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Feed from "../components/Feed/Feed";
-import SideBar from "../components/SideBar/SideBar";
-import Widgets from "../components/Widgets/Widgets";
+import Feed from "../components/Feed";
+import SideBar from "../components/SideBar";
+import Widgets from "../components/Widgets";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import CommentModal from "../components/Feed/DisplayTweets/CommentModal";
 import TweetBoxModal from "../components/Feed/TweetBox/TweetBoxModal";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const isUserIdExists = router.query.userId
-  // useEffect(() => {
-  //     if (!session?.user) {
-  //       router.push("/");
-  //     } else {
-  //       router.push("/auth/signin")
-  //     }
-  // }
-  // ,[])
+  // console.log(" status : " + status);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
+      console.count("user is not loggged in");
+    } else if (status === "authenticated") {
+      console.log(" user is logged in");
+    }
+    const user = {
+      userId: "@" + session?.user?.name?.split(" ").join("").toLocaleLowerCase(),
+    };
+    window.sessionStorage.setItem("userId",JSON.stringify(user) )
+  }, [session, status]);
 
   return (
     <div className=" max-h-screen overflow-hidden  max-w-6xl mx-auto">
@@ -30,22 +33,14 @@ const Home: NextPage = () => {
         <title>Twitter</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {session ? (
+      {session && (
         <main className="grid grid-cols-9 ">
           <SideBar />
           <Feed />
           <Widgets />
           <CommentModal />
-          <TweetBoxModal/>
+          <TweetBoxModal />
         </main>
-      ) : (
-        <Link href="/auth/signin">
-          <div className="flex items-center justify-center min-h-screen">
-            <div className=" text-[2rem] p-2 px-6 cursor-pointer bg-twitter rounded-full ">
-              Click To Sign In Page Bruh......
-            </div>
-          </div>
-        </Link>
       )}
     </div>
   );

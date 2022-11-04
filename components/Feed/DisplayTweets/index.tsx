@@ -41,7 +41,7 @@ function DisplayTweets({ post }: any) {
           {/* Top  */}
           <section className="flex  items-center ">
             <p>
-              {post?.userId} . <Moment fromNow>{post?.createdAt}</Moment>{" "}
+              {post?.userId} . <Moment fromNow >{post?.createdAt}</Moment>{" "}
             </p>
             <BiDotsHorizontalRounded className="ml-auto w-[1.2rem] h-[1.2rem]" />
           </section>

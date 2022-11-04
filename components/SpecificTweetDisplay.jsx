@@ -9,6 +9,7 @@ import Actions from "./Feed/DisplayTweets/Actions";
 import { useSession } from "next-auth/react";
 import CommentDesign from "./CommentDesign";
 import { clicked } from "../Redux/features/GlobalSlice";
+import { useRouter } from "next/router";
 
 // type replyState = {
 //   _id: string,
@@ -22,8 +23,9 @@ import { clicked } from "../Redux/features/GlobalSlice";
 function SpecificTweetDisplay({ post }) {
   const [replyInput, setReplyInput] = useState("");
   const { data: session } = useSession();
-  const dispatch = useDispatch()
-  
+  const router = useRouter()
+  const dispatch = useDispatch();
+
   console.log("post from server side props " + post);
 
   const data = {
@@ -44,7 +46,7 @@ function SpecificTweetDisplay({ post }) {
       body: JSON.stringify(data),
     }).then(() => {
       setReplyInput("");
-      dispatch(clicked())
+      dispatch(clicked());
       console.log("reply added successfully");
     });
   }
@@ -52,14 +54,15 @@ function SpecificTweetDisplay({ post }) {
   return (
     <div className=" col-span-7 lg:col-span-5 border-x-[0.1rem] mr-2  overflow-scroll max-h-screen scrollbar-hide p-2 ">
       <section className="flex items-center gap-6 mb-2">
-        <Link passHref href={"/"}>
+  
           <a>
-            <IoArrowBackSharp
+          <IoArrowBackSharp
+            onClick={() => router.back()}
               title="back"
               className="text-[2.3rem] cursor-pointer hover:bg-gray-300 p-1 rounded-full"
             />
           </a>
-        </Link>
+        
         <p className="font-bold text-black text-[1.3rem]">Tweet</p>
       </section>
 
@@ -79,7 +82,7 @@ function SpecificTweetDisplay({ post }) {
       <p className="p-3 text-[1.5rem]">{post?.userInput}</p>
       <div className="border-y-2 flex p-2 gap-4 ">
         <p>{post?.comments?.length} Comments</p>
-        <p>{post?.likes?.length } Likes</p>
+        <p>{post?.likes?.length} Likes</p>
       </div>
 
       <Actions post={post} />

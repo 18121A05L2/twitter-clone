@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Explore() {
+function Search() {
   return (
     <div className=" ">
-      Explore
+      Search
     </div>
   );
 }
 
-export default Explore
+export default Search

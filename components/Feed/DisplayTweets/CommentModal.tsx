@@ -64,7 +64,7 @@ export default function CommentModal() {
         <BiX
           onClick={() => dispatch(modalStateChainging())}
           title="Close"
-          className="w-[2rem] h-[2rem] bg-gray-300 rounded-full   "
+          className="w-[2rem] h-[2rem] hover:bg-gray-300 rounded-full   "
         />
 
         <section className="py-8 flex  ">
@@ -87,9 +87,9 @@ export default function CommentModal() {
             <section className="flex ">
               <h1 className="font-bold pr-2">{post?.userName}</h1>
               <p className="pr-2 text-gray-500">{post?.userId} . </p>
-              <Moment className="text-gray-500" fromNow>
+              {/* <Moment className="text-gray-500" fromNow>
                 {post?.createdAt}
-              </Moment>
+              </Moment> */}
             </section>
             <p className="max-w-[28rem]">{post?.userInput}</p>
             <p className="flex p-3">

@@ -39,7 +39,7 @@ function SideBar() {
         <SideBarItem Icon={CgMoreO} text="More" />
         <div
           onClick={() => dispatch(tweetBoxModal())}
-          className="bg-twitter flex-1 lg:min-w-[15rem] p-3 flex justify-center items-center text-white font-bold rounded-full "
+          className="bg-twitter flex-1 lg:min-w-[15rem] cursor-pointer p-3 flex justify-center items-center text-white font-bold rounded-full "
         >
           Tweet
         </div>

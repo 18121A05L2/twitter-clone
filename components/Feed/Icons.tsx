@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { AiOutlineFileGif } from "react-icons/ai";
 import { BiPoll } from "react-icons/bi";
@@ -17,13 +17,9 @@ function Icons() {
       <HiOutlinePhotograph
         className={styles.icon}
         onClick={() => {
-          // filePickerRef?.current?.click();
           console.log("clicked photo icon");
         }}
-      >
-        {/* <input ref={filePickerRef} hidden type="file"></input> */}
-      </HiOutlinePhotograph>
-
+      ></HiOutlinePhotograph>
       <AiOutlineFileGif className={styles.icon} />
       <BiPoll className={styles.icon} />
       <RiEmotionHappyLine className={styles.icon} />
@@ -33,4 +29,4 @@ function Icons() {
   );
 }
 
-export default Icons
+export default Icons;

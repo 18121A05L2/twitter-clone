@@ -1,5 +1,5 @@
 import { HiOutlineRefresh } from "react-icons/hi";
-import DisplayTweets from "./DisplayTweets/DisplayTweets";
+import DisplayTweets from "./DisplayTweets";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import TweetBox from "./TweetBox/TweetBox";
@@ -15,10 +15,10 @@ type arrType = {
   userInput: string;
 };
 
-function Feed({allPostsData} : any) {
+function Feed({ allPostsData }: any) {
   const [allPosts, setAllPosts] = useState<arrType[]>([] as arrType[]);
   const tweetAdded = useSelector((state: any) => state.global.tweetAdded);
-  const dataChanged = useSelector((state :any) => state.global.dataChanged);  
+  const dataChanged = useSelector((state: any) => state.global.dataChanged);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -29,7 +29,7 @@ function Feed({allPostsData} : any) {
       setAllPosts(data);
     };
     getPosts();
-  }, [tweetAdded , dataChanged ]);
+  }, [tweetAdded, dataChanged]);
 
   return (
     <div className=" col-span-7 lg:col-span-5 border-x-[0.1rem] mr-2 overflow-scroll max-h-screen scrollbar-hide ">
@@ -39,10 +39,10 @@ function Feed({allPostsData} : any) {
       </div>
       {/* Tweet box  */}
       <TweetBox />
-      {allPosts?.map((post : any) => {
+      {allPosts?.map((post: any) => {
         // console.log(post._id)
 
-        return <DisplayTweets key={uuidv4()} post={post}  />;
+        return <DisplayTweets key={uuidv4()} post={post} />;
       })}
     </div>
   );
@@ -57,8 +57,7 @@ export default Feed;
 //       res.json()
 //     );
 //   console.log("😇 data"+data)
-  
-  
+
 //   return {
 //     props: {
 //       allPostsData : data

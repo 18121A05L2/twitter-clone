@@ -24,7 +24,6 @@ export default function SignIn({ providers }) {
                 </button>
               </div>
             ))}
-
             <FcGoogle className="w-[1.5rem] h-[1.5rem]" />
           </div>
         </div>

@@ -16,7 +16,7 @@ function Like({ styles, post }) {
   const postId = post?._id;
   const userId = "@" + session?.user?.name?.split(" ")[0].toLowerCase();
   const isLiked = post?.likes?.filter((like) => like.userId === userId);
-  console.log(" is liked: " + isLiked);
+  // console.log(" is liked: " + isLiked);
   // console.log(Boolean(isLiked?.length));
 
   async function handleLikes(e) {

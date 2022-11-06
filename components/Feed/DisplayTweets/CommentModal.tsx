@@ -8,6 +8,7 @@ import Icons from "../Icons";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Moment from "react-moment";
+import axiosAPI from "../../../axios";
 
 type replyState = {
   postId: string;
@@ -38,13 +39,7 @@ export default function CommentModal() {
     };
 
   function handleReply() {
-    fetch("http://localhost:5000/comments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(() => {
+    axiosAPI.post("/comments", JSON.stringify(data)).then(() => {
       setReply("");
        dispatch(clicked());
       console.log("reply added successfully");

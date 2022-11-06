@@ -4,8 +4,7 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import Link from "next/link";
 import Actions from "./Actions";
 import { useDispatch } from "react-redux";
-import { tweetContent } from "../../../Redux/features/CommentSlice";
-
+import Image from "next/image";
 
 type postType = {
   post: {
@@ -20,30 +19,24 @@ type postType = {
 };
 
 function DisplayTweets({ post }: any) {
-  const dispatch = useDispatch();
-  
-
-  function handleMainClick(e: any) {
-    // const id = e.target.id
-    
-  }
   return (
     <Link passHref href={`/${post.userId.slice(1)}/status/${post._id}`}>
-      <div
-        onClick={handleMainClick}
-        className="flex border-t-[0.1rem] p-2 hover:bg-gray-100"
-      >
-        <img
-          className="w-[3rem] h-[3rem] rounded-full m-1 "
-          src={post?.userImage}
-        ></img>
+      <div className="flex border-t-[0.1rem] p-2 hover:bg-gray-100">
+        <div className="relative h-[3rem] w-[3.2rem] ">
+          <Image
+            layout="fill"
+            className=" rounded-full "
+            src={post?.userImage}
+          ></Image>
+        </div>
+
         <div className="w-full px-2 ">
           {/* Top  */}
           <section className="flex  items-center ">
             <p>
-              {post?.userId} . <Moment fromNow >{post?.createdAt}</Moment>{" "}
+              {post?.userId} . <Moment fromNow>{post?.createdAt}</Moment>{" "}
             </p>
-            <BiDotsHorizontalRounded className="ml-auto w-[1.2rem] h-[1.2rem]" />
+            <BiDotsHorizontalRounded className="ml-auto h-[1.2rem] w-[1.2rem]" />
           </section>
           <section className="p-4">{post?.userInput}</section>
           {/* icons */}

@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BiX } from "react-icons/bi";
-import { editProfileModal ,profileDataChainging } from "../Redux/features/GlobalSlice";
+import {
+  editProfileModal,
+  profileDataChainging,
+} from "../Redux/features/GlobalSlice";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import axios from "axios";
+import axiosAPI from "../axios";
 
 const styles = {
   div: " border m-2 rounded-md p-1  ",
@@ -16,20 +21,13 @@ function EditProfileModal() {
   const dispatch = useDispatch();
   const [profileData, setProfileData] = useState([]);
   const userId = JSON.parse(window.sessionStorage.getItem("userId")).userId;
-  // console.log(" user : " + userId)
-  // console.log(" ProfileData : " + profileData.name);
-  const name = profileData.name;
 
   useEffect(() => {
     // -------------------------------------------- fetching Profile Data --------------------
     async function fetchProfileData() {
-      const profileData = await fetch("http://localhost:5000/profiledata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userId }),
-      }).then((res) => res.json());
+      const profileData = await axiosAPI
+        .post("/profiledata", JSON.stringify({ userId: userId }))
+        .then((res) => res.data);
       setProfileData(profileData);
     }
     fetchProfileData();
@@ -57,7 +55,7 @@ function EditProfileModal() {
         userImage: session?.user?.image,
         backgroundImage: profileData.backgroundImage,
       });
-  }, [profileData,session]);
+  }, [profileData, session]);
   const editProfileModalState = useSelector(
     (state) => state.global.editProfileModalState
   );
@@ -73,7 +71,7 @@ function EditProfileModal() {
       body: JSON.stringify(data),
     });
     dispatch(editProfileModal());
-    dispatch(profileDataChainging())
+    dispatch(profileDataChainging());
   }
 
   return (
@@ -82,17 +80,17 @@ function EditProfileModal() {
         editProfileModalState ? " inline " : " hidden "
       }   `}
     >
-      <div className="bg-white min-w-[35rem] min-h-[30rem] rounded-xl   ">
-        <div className="flex gap-4 items-center p-2 ">
+      <div className="min-h-[30rem] min-w-[35rem] rounded-xl bg-white   ">
+        <div className="flex items-center gap-4 p-2 ">
           <BiX
             onClick={() => dispatch(editProfileModal())}
             title="Close"
-            className="w-[2rem] h-[2rem] hover:bg-gray-300 rounded-full   "
+            className="h-[2rem] w-[2rem] rounded-full hover:bg-gray-300   "
           />
-          <p className="font-bold text-[1.3rem]   ">Edit Profile</p>
+          <p className="text-[1.3rem] font-bold   ">Edit Profile</p>
           <button
             onClick={handleSave}
-            className="bg-black text-white p-2 px-6 rounded-full ml-auto opacity-80 hover:opacity-100   "
+            className="ml-auto rounded-full bg-black p-2 px-6 text-white opacity-80 hover:opacity-100   "
           >
             Save
           </button>

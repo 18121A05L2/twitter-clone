@@ -11,22 +11,21 @@ import { editProfileModal } from "../Redux/features/GlobalSlice";
 import { useRouter } from "next/router";
 import { AiOutlineLink } from "react-icons/ai";
 import Moment from "react-moment";
+import axiosAPI from "../axios.js";
+
 
 function Profile() {
   const { data: session } = useSession();
   const [profilePosts, setProfilePosts] = useState([]);
   const [profileData, setProfileData] = useState([]);
   const router = useRouter();
-  const profileDataChanged = useSelector((state) => state.global.profileDataChanged)
-  // console.log("=====================================")
+  const profileDataChanged = useSelector(
+    (state) => state.global.profileDataChanged
+  );
   const newUserId = router?.query?.component && router?.query?.component[1];
- 
   const dataChanged = useSelector((state) => state.global.dataChanged);
-  // const userId =
-  //   "@" + session?.user?.name?.split(" ").join("").toLocaleLowerCase();
-  const userId = newUserId || JSON.parse(window.sessionStorage.getItem("userId"))?.userId
-  // console.log(userId);
-  // console.log(profileData)
+  const userId =
+    newUserId || JSON.parse(window.sessionStorage.getItem("userId"))?.userId;
   const dispatch = useDispatch();
   useEffect(() => {
     // ----------------------   profile creation if not exists ------------------------------------
@@ -36,40 +35,24 @@ function Profile() {
         userImage: session?.user?.image,
         name: session?.user?.name,
       };
-      const response = await fetch("http://localhost:5000/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await axiosAPI.post("/profile", JSON.stringify(data));
     }
     profile();
     // -------------------------------------------- fetching Profile Data --------------------
     async function fetchProfileData() {
-      const profileData = await fetch("http://localhost:5000/profiledata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userId }),
-      }).then(async (res) => await res.json());
-
+      const profileData = await axiosAPI
+        .post("/profiledata", JSON.stringify({ userId: userId }))
+        .then(async (res) => await res.data);
       setProfileData(profileData);
     }
     fetchProfileData();
-  }, [router.query.component,session,profileDataChanged ]);
+  }, [router.query.component, session, profileDataChanged]);
 
   useEffect(() => {
     async function fetchingProfilePosts() {
-      const profilePosts = await fetch("http://localhost:5000/profileposts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: userId }),
-      }).then((res) => res.json());
-
+      const profilePosts = await axiosAPI
+        .post("/profileposts", JSON.stringify({ userId: userId }))
+        .then((res) => res.data);
       setProfilePosts(profilePosts);
     }
     fetchingProfilePosts();
@@ -82,7 +65,7 @@ function Profile() {
           <a>
             <IoArrowBackSharp
               title="back"
-              className="text-[2.3rem] cursor-pointer hover:bg-gray-300 p-1 rounded-full"
+              className="cursor-pointer rounded-full p-1 text-[2.3rem] hover:bg-gray-300"
             />
           </a>
         </Link>
@@ -102,11 +85,14 @@ function Profile() {
             "https://thumbs.dreamstime.com/b/technology-banner-background-old-new-using-computer-circuits-old-machine-cogs-37036025.jpg"
           }
         />
-        {/* <Image className="rounded-full border absolute -top-10 " width="100" height="100" src={session?.user?.image}></Image> */}
-        <img
-          className="rounded-full border-4 border-white absolute top-[8rem] left-[2rem]"
-          src={profileData?.userImage}
-        ></img>
+        <div className="absolute top-[8rem] left-[2rem] h-[7rem] w-[7rem] rounded-full border-4 border-white">
+          <Image
+            className="rounded-full"
+            layout="fill"
+            src={profileData?.userImage}
+          ></Image>
+        </div>
+
         {newUserId &&
         JSON.parse(window.sessionStorage.getItem("userId")).useId !==
           newUserId ? (
@@ -116,14 +102,14 @@ function Profile() {
             onClick={() => {
               dispatch(editProfileModal());
             }}
-            className=" font-semibold  ml-auto border-[0.1rem] p-2 px-4 rounded-3xl mt-2 mr-4 cursor-pointer "
+            className=" ml-auto  mt-2 mr-4 cursor-pointer rounded-3xl border-[0.1rem] p-2 px-4 font-semibold "
           >
             Edit profile
           </p>
         )}
       </div>
       <div
-        className={` flex flex-col pl-4 gap-2 ${
+        className={` flex flex-col gap-2 pl-4 ${
           newUserId &&
           JSON.parse(window.sessionStorage.getItem("userId")).useId !==
             newUserId &&
@@ -135,11 +121,11 @@ function Profile() {
         <p>{profileData?.bio}</p>
 
         <div className="flex gap-4   ">
-          <div className="flex gap-2 items-center  ">
+          <div className="flex items-center gap-2  ">
             <MdOutlineBusinessCenter />
             <p>Community</p>
           </div>
-          <div className=" flex gap-2 items-center  ">
+          <div className=" flex items-center gap-2  ">
             <GoCalendar />
             <p>
               Joined
@@ -153,11 +139,11 @@ function Profile() {
               target="_blank"
               className=" text-twitter "
             >
-              website
+              {profileData?.website?.slice(0, 20) + "..."}
             </a>
           </div>
         </div>
-        <div className="flex gap-4 pb-2 mb-2">
+        <div className="mb-2 flex gap-4 pb-2">
           <div className="flex gap-2">
             <p className="font-bold">0</p>
             <p>Following</p>

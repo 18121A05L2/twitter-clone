@@ -12,23 +12,23 @@ import TweetBoxModal from "../components/Feed/TweetBox/TweetBoxModal";
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  // console.log(" status : " + status);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
-      console.count("user is not loggged in");
+      // console.count("user is not loggged in");
     } else if (status === "authenticated") {
-      console.log(" user is logged in");
+      // console.log(" user is logged in");
     }
     const user = {
-      userId: "@" + session?.user?.name?.split(" ").join("").toLocaleLowerCase(),
+      userId:
+        "@" + session?.user?.name?.split(" ").join("").toLocaleLowerCase(),
     };
-    window.sessionStorage.setItem("userId",JSON.stringify(user) )
+    window.sessionStorage.setItem("userId", JSON.stringify(user));
   }, [session, status]);
 
   return (
-    <div className=" max-h-screen overflow-hidden  max-w-6xl mx-auto">
+    <div className=" mx-auto max-h-screen  max-w-6xl overflow-hidden">
       <Head>
         <title>Twitter</title>
         <link rel="icon" href="/favicon.ico" />

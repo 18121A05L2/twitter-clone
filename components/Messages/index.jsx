@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import Message from "./Message";
 import { io } from "socket.io-client";
 import { useDispatch } from "react-redux";
-import {settingOnlineUsers} from "../../Redux/features/GlobalSlice"
-
+import { settingOnlineUsers } from "../../Redux/features/GlobalSlice";
+import Image from "next/image";
+import axiosAPI from "../../axios";
 
 function Messages() {
   const [input, setInput] = useState("");
@@ -18,7 +19,7 @@ function Messages() {
   const router = useRouter();
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [allMessages, setAllMessages] = useState([]);
-  console.log(allMessages)
+  console.log(allMessages);
 
   const conversationId = router?.query?.component && router.query?.component[1];
   const routerArr =
@@ -49,6 +50,7 @@ function Messages() {
       });
       console.log("Arrival message : " + arrivalMessage);
     });
+    console.count(" useffect runs ");
   }, []);
 
   useEffect(() => {
@@ -56,47 +58,39 @@ function Messages() {
       routerArr &&
       routerArr.includes(arrivalMessage.senderId) &&
       setAllMessages((prev) => [...prev, arrivalMessage]);
-    
-  
   }, [arrivalMessage]);
 
   useEffect(() => {
-  scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  },[allMessages])
-
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages]);
 
   useEffect(() => {
     socket.current?.emit("addUser", senderId);
     socket.current?.on("getUsers", (users) => {
-      users && dispatch(settingOnlineUsers(users))
-      
+      users && dispatch(settingOnlineUsers(users));
+
       console.log(users);
     });
   }, [senderId, socket, router?.query?.component]);
 
   useEffect(() => {
     async function fetchingAllMessages() {
-      const data = await fetch("http://localhost:5000/conversation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ conversationId: conversationId }),
-      }).then(async (res) => await res?.json());
+      const data = await axiosAPI
+        .post(
+          "/conversation",
+          JSON.stringify({ conversationId: conversationId })
+        )
+        .then(async (res) => await res?.data);
       console.log("conversation Id  : " + conversationId);
 
-     setAllMessages(data);
+      setAllMessages(data);
     }
-     conversationId && fetchingAllMessages();
+    conversationId && fetchingAllMessages();
 
     async function fetchingReceiverProfile() {
-      const data = await fetch("http://localhost:5000/profiledata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: receiverId }),
-      }).then(async (res) => await res?.json());
+      const data = await axiosAPI
+        .post("/profiledata", JSON.stringify({ userId: receiverId }))
+        .then(async (res) => await res?.data);
       setReceiverProfileData(data);
     }
     router?.query.component && routerArr && fetchingReceiverProfile();
@@ -109,16 +103,8 @@ function Messages() {
       senderId,
       msg: input,
     };
-    await fetch("http://localhost:5000/message", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(async (res) => {
-      const data = await res.json();
-      // console.log("res : " + data);
-      // setAllMessages(data);
+    await axiosAPI.post("/message", JSON.stringify(data)).then(async (res) => {
+      const data = await res.data;
     });
     socket?.current.emit("sendMessage", {
       senderId: senderId,
@@ -131,47 +117,56 @@ function Messages() {
   return (
     <div className="flex">
       {receiverId ? (
-        <div className="flex flex-col min-h-screen h-full w-full  bg-red-100">
-          <div className="hover:bg-red-300 bg-red-200 flex flex-col items-center ">
-            <img
-              className="h-[5rem] w-[5rem] rounded-full"
-              src={receiverProfileData?.userImage}
-            ></img>
+        <div className="flex h-full min-h-screen w-full flex-col  bg-red-100">
+          <div className="flex flex-col items-center bg-red-200 hover:bg-red-300 ">
+            <div className="relative h-[5rem] w-[5rem] ">
+              <Image
+                layout="fill"
+                className=" rounded-full"
+                src={receiverProfileData?.userImage}
+              ></Image>
+            </div>
+
             <p>{receiverProfileData?.name}</p>
             <p>{receiverProfileData?.userId}</p>
 
             <p>{receiverProfileData?.bio}</p>
           </div>
-          <div  className="  h-full flex flex-col p-2 py-4 ">
+          <div className="  flex h-full flex-col p-2 py-4 ">
             {allMessages?.map((msg) => {
               return (
-                // <div ref={scrollRef} >
-                  <Message msg={msg} key={msg._id + msg.msg} scrollRef={scrollRef} />
-                // </div>
+                <Message
+                  msg={msg}
+                  key={msg._id + msg.msg}
+                  scrollRef={scrollRef}
+                />
               );
             })}
           </div>
-          <div className="text-twitter sticky bottom-0  mt-auto flex items-center gap-4 bg-gray-100 p-4 py-2 rounded-3xl mx-2 text-[1.5rem]     m-1  ">
+          <div className="sticky bottom-0 m-1  mx-2 mt-auto flex items-center gap-4 rounded-3xl bg-gray-100 p-4 py-2 text-[1.5rem]     text-twitter  ">
             <BsCardImage />
             <AiOutlineFileGif />
             <BsEmojiSmile />
             <input
-              className="bg-gray-100 text-[1rem] w-full outline-none  "
+              className="w-full bg-gray-100 text-[1rem] outline-none  "
               onChange={(e) => setInput(e.target.value)}
               value={input}
               type="text"
               placeholder="Start a new Message"
             ></input>
-            <BiSend  className="ml-auto text-[2.5rem] cursor-pointer hover:-rotate-45 transition-transform " onClick={handleSend} />
+            <BiSend
+              className="ml-auto cursor-pointer text-[2.5rem] transition-transform hover:-rotate-45 "
+              onClick={handleSend}
+            />
           </div>
         </div>
       ) : (
-        <div className=" h-screen w-full flex flex-col items-center justify-center text-center ">
+        <div className=" flex h-screen w-full flex-col items-center justify-center text-center ">
           <div className=" flex flex-col items-center justify-center">
-            <p className=" bg-twitter p-2 text-[1.5rem] rounded-full px-6 ">
+            <p className=" rounded-full bg-twitter p-2 px-6 text-[1.5rem] ">
               Start Converstion By Clicking on profile
             </p>
-            <p className=" text-slate-500 w-[23rem] mt-3  ">
+            <p className=" mt-3 w-[23rem] text-slate-500  ">
               Choose from your existing conversations, start a new one, or just
               keep swimming
             </p>

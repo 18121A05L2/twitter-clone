@@ -1,14 +1,13 @@
 import React from "react";
-import { useRouter } from "next/router";
+
 import SideBar from "../../../components/SideBar";
 import Widgets from "../../../components/Widgets";
 import CommentModal from "../../../components/Feed/DisplayTweets/CommentModal";
 import TweetBoxModal from "../../../components/Feed/TweetBox/TweetBoxModal";
 import SpecificTweetDisplay from "../../../components/SpecificTweetDisplay";
+import axiosAPI from "../../../axios";
 
 function specificTweet({ post }) {
-  const router = useRouter();
-  // console.log(router.query.userId)
   return (
     <div className=" max-h-screen overflow-hidden  max-w-6xl mx-auto">
       <main className="grid grid-cols-9 ">
@@ -31,13 +30,7 @@ export async function getServerSideProps(context) {
 
   console.log("🥶 this is context" + context);
 
-  const post = await fetch("http://localhost:5000/tweet", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  }).then((res) => res.json());
+  const post = await axiosAPI.post("/tweet",JSON.stringify(data)).then((res) => res.data);
 
   return {
     props: {

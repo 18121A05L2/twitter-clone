@@ -3,6 +3,7 @@ import { FiTwitter } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import { clicked } from "../../../Redux/features/GlobalSlice";
 import { useDispatch } from "react-redux";
+import axiosAPI from "../../../axios";
 
 var twitterTone;
 
@@ -16,8 +17,6 @@ function Like({ styles, post }) {
   const postId = post?._id;
   const userId = "@" + session?.user?.name?.split(" ")[0].toLowerCase();
   const isLiked = post?.likes?.filter((like) => like.userId === userId);
-  // console.log(" is liked: " + isLiked);
-  // console.log(Boolean(isLiked?.length));
 
   async function handleLikes(e) {
     e.stopPropagation();
@@ -26,14 +25,11 @@ function Like({ styles, post }) {
       postId: postId,
     };
 
-    await fetch("http://localhost:5000/likes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((value) => {
-      console.log("like or unlike is happened : " + value);
+    await axiosAPI.post("/likes", JSON.stringify(data)).then((value) => {
+      console.log(
+        "%c" + value.data,
+        "color: green; background: yellow; font-size: 15px"
+      );
       dispatch(clicked());
     });
   }
@@ -43,15 +39,14 @@ function Like({ styles, post }) {
       <FiTwitter
         id="like"
         onClick={(e) => {
-          console.log("tone playing");
           twitterTone.play();
           handleLikes(e);
         }}
         className={
           styles.icon +
           `  ${
-            isLiked?.length && "  text-blue-400 fill-twitter "
-          } hover:fill-twitter hover:text-twitter active:scale-[5] transition-scale duration-500 ease-in `
+            isLiked?.length && "  fill-twitter text-blue-400 "
+          } transition-scale duration-500 ease-in hover:fill-twitter hover:text-twitter active:scale-[5] `
         }
       />
     </div>

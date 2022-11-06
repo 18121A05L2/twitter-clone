@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "../Redux/app/store";
 import DataProvider from "../context/DataContext";
 
-// need to learn abot this Session type
+// need to learn about this Session type
 function MyApp({
   Component,
   pageProps: { session, ...pageProps },
@@ -15,7 +15,6 @@ function MyApp({
     <SessionProvider session={session}>
       <Provider store={store}>
         <DataProvider>
-          {/* To keeep our session throught our application */}
           <Component {...pageProps} />
         </DataProvider>
       </Provider>

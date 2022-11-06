@@ -3,25 +3,19 @@ import Icons from "../Icons";
 import { useDispatch } from "react-redux";
 import { tweetAdded } from "../../../Redux/features/GlobalSlice";
 import { tweetBoxModal } from "../../../Redux/features/GlobalSlice";
-
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-
-//  var tweetAudio = new Audio("/whistle_tweet.mp3");
+import axiosAPI from "../../../axios";
 
 function TweetBox() {
   const [input, setInput] = useState<string>("");
-  // const filePickerRef = useRef(null);
   const { data: session } = useSession();
   const dispatch = useDispatch();
   const tweetBoxModalState = useSelector(
     (state: any) => state.global.tweetBoxModalState
   );
-
- 
-
-  // input ?  (tweetAudio.paused &&   tweetAudio.play() ) :  tweetAudio.pause()
 
   function addDataToMongo() {
     const data = {
@@ -34,17 +28,10 @@ function TweetBox() {
       userInput: input,
     };
 
-    fetch("http://localhost:5000/tweets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then(() => {
+    axiosAPI.post("/tweets", JSON.stringify(data)).then(() => {
       setInput("");
       dispatch(tweetAdded());
       tweetBoxModalState && dispatch(tweetBoxModal());
-      // tweetAudio.play();
       console.log("tweet added to the mongoDB");
     });
   }
@@ -52,14 +39,16 @@ function TweetBox() {
   return (
     <div className="flex p-2 ">
       <Link passHref href={"/user/profile"}>
-        
-        <img
-          className="h-[2.5rem] w-[2.5rem] m-2 rounded-full"
-          src={session?.user?.image || "https://links.papareact.com/gll"}
-        ></img>
+        <div className="relative h-[2.5rem] w-[2.5rem] ">
+          <Image
+            layout="fill"
+            className=" m-2 rounded-full"
+            src={session?.user?.image || "https://links.papareact.com/gll"}
+          ></Image>
+        </div>
       </Link>
 
-      <div className=" flex flex-col flex-1   ">
+      <div className=" flex flex-1 flex-col   ">
         <textarea
           className="p-3 outline-none"
           value={input}
@@ -71,7 +60,7 @@ function TweetBox() {
           }
         ></textarea>
         <div
-          className={`flex justify-between mt-auto ${
+          className={`mt-auto flex justify-between ${
             tweetBoxModalState && " border-t-2 "
           }`}
         >
@@ -85,7 +74,7 @@ function TweetBox() {
             )}
 
             <button
-              className="bg-twitter font-bold px-3 p-1 m-2 text-white rounded-full disabled:opacity-60"
+              className="m-2 rounded-full bg-twitter p-1 px-3 font-bold text-white disabled:opacity-60"
               disabled={!input || input.length > 256}
               onClick={addDataToMongo}
             >

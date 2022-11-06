@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SideBar from "../../components/SideBar";
 import Profile from "../../components/Profile";
-import Widgets from "../../components/widgets";
+import Widgets from "../../components/Widgets";
 import TweetBoxModal from "../../components/Feed/TweetBox/TweetBoxModal";
 import CommentModal from "../../components/Feed/DisplayTweets/CommentModal";
 import Bookmarks from "../../components/Bookmarks";

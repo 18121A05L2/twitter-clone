@@ -13,7 +13,6 @@ const styles = {
 function Icons() {
   return (
     <div className="flex items-center gap-3 text-twitter ">
-      {/* uploading images  */}
       <HiOutlinePhotograph
         className={styles.icon}
         onClick={() => {

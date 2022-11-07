@@ -4,10 +4,18 @@ import { useSession } from "next-auth/react";
 import { clicked } from "../../../Redux/features/GlobalSlice";
 import { useDispatch } from "react-redux";
 import axiosAPI from "../../../axios";
+import { postType } from "../../../Types/Feed.types";
 
-var twitterTone;
+var twitterTone: HTMLAudioElement;
 
-function Like({ styles, post }) {
+type propsType = {
+  styles: {
+    icon: String;
+  };
+  post?: postType;
+};
+
+function Like({ styles, post }: propsType) {
   useEffect(() => {
     twitterTone = new Audio("/twitter-tone.mp3");
   }, []);
@@ -18,7 +26,7 @@ function Like({ styles, post }) {
   const userId = "@" + session?.user?.name?.split(" ")[0].toLowerCase();
   const isLiked = post?.likes?.filter((like) => like.userId === userId);
 
-  async function handleLikes(e) {
+  async function handleLikes(e: React.MouseEvent<SVGElement, MouseEvent>) {
     e.stopPropagation();
     const data = {
       userId: userId,

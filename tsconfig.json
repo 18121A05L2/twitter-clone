@@ -28,8 +28,8 @@
     "Redux/features/DataSlice.js",
     "pages/[userId]/status/[tweetId].js",
     "context/DataContext.jsx",
-    "components/Feed/DisplayTweets/Actions.jsx",
-    "components/Feed/DisplayTweets/Like.jsx",
+    "components/Feed/DisplayTweets/Actions.tsx",
+    "components/Feed/DisplayTweets/Like.tsx",
     "components/Feed/Icons.tsx",
     "components/Widgets/index.jsx",
     "axios.js"

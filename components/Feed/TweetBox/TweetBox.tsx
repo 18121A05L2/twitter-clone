@@ -13,7 +13,7 @@ function TweetBox() {
   const [input, setInput] = useState<string>("");
   const { data: session } = useSession();
   const dispatch = useDispatch();
-  const tweetBoxModalState = useSelector(
+  const tweetBoxModalState : Boolean = useSelector(
     (state: any) => state.global.tweetBoxModalState
   );
 

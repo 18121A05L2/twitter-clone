@@ -5,10 +5,11 @@ import {
   editProfileModal,
   profileDataChainging,
 } from "../Redux/features/GlobalSlice";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 import axiosAPI from "../axios";
+import { profileType} from  "../Types/Feed.types"
+
+
 
 const styles = {
   div: " border m-2 rounded-md p-1  ",
@@ -19,8 +20,8 @@ const styles = {
 function EditProfileModal() {
   const { data: session } = useSession();
   const dispatch = useDispatch();
-  const [profileData, setProfileData] = useState([]);
-  const userId = JSON.parse(window.sessionStorage.getItem("userId")).userId;
+  const [profileData, setProfileData] = useState({} as profileType );
+  const userId : string = JSON.parse(window.sessionStorage.getItem("userId")??"").userId;
 
   useEffect(() => {
     // -------------------------------------------- fetching Profile Data --------------------
@@ -33,13 +34,13 @@ function EditProfileModal() {
     fetchProfileData();
   }, []);
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<profileType>({
     name: "",
     bio: "",
     location: "",
     website: "",
     userId: userId,
-    newUserId: userId,
+    birthDate : new Date(),
     userImage: session?.user?.image,
     backgroundImage: "",
   });
@@ -51,16 +52,14 @@ function EditProfileModal() {
         location: profileData.location,
         website: profileData.website,
         userId: userId,
-        newUserId: userId,
+        birthDate: new Date(),
         userImage: session?.user?.image,
         backgroundImage: profileData.backgroundImage,
       });
   }, [profileData, session]);
   const editProfileModalState = useSelector(
-    (state) => state.global.editProfileModalState
+    (state : any) => state.global.editProfileModalState
   );
-
-  // console.log(data);
 
   async function handleSave() {
     const res = await fetch("http://localhost:5000/profile", {
@@ -135,7 +134,7 @@ function EditProfileModal() {
             value={data.website}
           ></input>
         </div>
-        <div className={styles.div}>
+        {/* <div className={styles.div}>
           <p className={styles.caption}>new User Id</p>
           <input
             className={styles.input}
@@ -144,7 +143,7 @@ function EditProfileModal() {
             }
             value={data.newUserId}
           ></input>
-        </div>
+        </div> */}
         <div className={styles.div}>
           <p className={styles.caption}>backgroundImage Url</p>
           <input

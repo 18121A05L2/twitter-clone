@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import ProfileSection from "./ProfileSection";
 import { useSelector } from "react-redux";
+import { profileType } from "../../Types/Feed.types";
+
+type onlineUserType = {
+  userId: string;
+  socketId: string; 
+}
 
 function MessageSearch() {
-  const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState<profileType[]>([]);
   const [search, setSearch] = useState("");
-  const onlineUsers = useSelector(state => state.global.onlineUsers)
+  const onlineUsers = useSelector((state : any) => state.global.onlineUsers)
   console.log("onlineUsers: " + onlineUsers)
   console.log(onlineUsers)
   const sessionUserId = JSON.parse(
-    window.sessionStorage.getItem("userId")
+    window.sessionStorage.getItem("userId")??""
   )?.userId;
   useEffect(() => {
     async function fetchingProfiles() {
@@ -43,8 +49,8 @@ function MessageSearch() {
               profile?.userId != sessionUserId
           )
           .map((profile) => {
-            let online = false;
-            onlineUsers.map(user => {
+            let online : Boolean = false;
+            onlineUsers.map((user : onlineUserType) => {
               if (user.userId === profile.userId) {
                 online = true;
               }

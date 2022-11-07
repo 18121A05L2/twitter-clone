@@ -9,12 +9,12 @@ import {
   tweetContent,
 } from "../../../Redux/features/CommentSlice";
 import Like from "./Like";
-
+import { postType } from "../../../Types/Feed.types";
 const styles = {
   icon: " w-[2.3rem] h-[2.3rem] text-gray-600 cursor-pointer  p-2 ",
 };
 
-function Actions({ post }) {
+function Actions({ post }: { post?: postType }) {
   const dispatch = useDispatch();
   return (
     <div>
@@ -31,7 +31,6 @@ function Actions({ post }) {
           />
           <p>{post?.comments?.length}</p>
         </div>
-
         <AiOutlineRetweet
           className={
             styles.icon +
@@ -42,7 +41,6 @@ function Actions({ post }) {
           <Like styles={styles} post={post} />
           <p> {post?.likes?.length} </p>
         </div>
-
         <IoShareOutline className={styles.icon} />
       </section>
     </div>

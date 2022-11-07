@@ -11,17 +11,9 @@ import CommentDesign from "./CommentDesign";
 import { clicked } from "../Redux/features/GlobalSlice";
 import { useRouter } from "next/router";
 import axiosAPI from "../axios";
+import { postType } from "../Types/Feed.types";
 
-// type replyState = {
-//   _id: string,
-//   replyData: string,
-//   userImage: string | null | undefined,
-//   userId: string | null | undefined,
-//   tweetUserId: string,
-//   userName: string,
-// };
-
-function SpecificTweetDisplay({ post }) {
+function SpecificTweetDisplay({ post } : { post : postType}) {
   const [replyInput, setReplyInput] = useState("");
   const { data: session } = useSession();
   const router = useRouter();

@@ -3,8 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import axiosAPI from "../../axios";
+import { profileType } from "../../Types/Feed.types";
 
-function ProfileSection({ profile, online }) {
+type propsType = {
+  profile: profileType;
+  online : Boolean;
+}
+
+function ProfileSection({ profile, online } : propsType) {
   const { data: session } = useSession();
   
   const arr = [
@@ -28,7 +34,7 @@ function ProfileSection({ profile, online }) {
       >
         {online && (
           <span className="absolute top-0 left-0 flex h-[1rem] w-[1rem] rounded-full bg-twitter  ">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
           </span>
         )}
 
@@ -36,7 +42,7 @@ function ProfileSection({ profile, online }) {
           <Image
             layout="fill"
             className="rounded-full "
-            src={profile?.userImage}
+            src={profile?.userImage || "https://links.papareact.com/drq"}
           ></Image>
         </div>
 

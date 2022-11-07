@@ -3,7 +3,6 @@ import { BiX } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 import { modalStateChainging } from "../../../Redux/features/CommentSlice";
 import { clicked } from "../../../Redux/features/GlobalSlice";
-
 import Icons from "../Icons";
 import Image from "next/image";
 import { useSession } from "next-auth/react";

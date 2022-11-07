@@ -4,19 +4,10 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import TweetBox from "./TweetBox/TweetBox";
 import { useSelector } from "react-redux";
+import { postType } from "../../Types/Feed.types";
 
-type arrType = {
-  _id: string;
-  createAt: Date;
-  userEmail: string;
-  userId: string;
-  userImage: string;
-  userName: string;
-  userInput: string;
-};
-
-function Feed({ allPostsData }: any) {
-  const [allPosts, setAllPosts] = useState<arrType[]>([] as arrType[]);
+function Feed() {
+  const [allPosts, setAllPosts] = useState<postType[]>([]);
   const tweetAdded = useSelector((state: any) => state.global.tweetAdded);
   const dataChanged = useSelector((state: any) => state.global.dataChanged);
 
@@ -25,23 +16,20 @@ function Feed({ allPostsData }: any) {
       const data = await fetch("http://localhost:5000/tweets").then((res) =>
         res.json()
       );
-      // console.log(data);
       setAllPosts(data);
     };
     getPosts();
   }, [tweetAdded, dataChanged]);
 
   return (
-    <div className=" col-span-7 lg:col-span-5 border-x-[0.1rem] mr-2 overflow-scroll max-h-screen scrollbar-hide ">
+    <div className=" scrollbar-hide col-span-7 mr-2 max-h-screen overflow-scroll border-x-[0.1rem] lg:col-span-5 ">
       <div className="flex justify-between p-2 ">
         <h2>Home</h2>
         <HiOutlineRefresh />
       </div>
       {/* Tweet box  */}
       <TweetBox />
-      {allPosts?.map((post: any) => {
-        // console.log(post._id)
-
+      {allPosts?.map((post) => {
         return <DisplayTweets key={uuidv4()} post={post} />;
       })}
     </div>

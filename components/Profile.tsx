@@ -6,26 +6,27 @@ import { useSession } from "next-auth/react";
 import { MdOutlineBusinessCenter } from "react-icons/md";
 import { GoCalendar } from "react-icons/go";
 import DisplayTweets from "./Feed/DisplayTweets";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
 import { editProfileModal } from "../Redux/features/GlobalSlice";
 import { useRouter } from "next/router";
 import { AiOutlineLink } from "react-icons/ai";
-import Moment from "react-moment";
 import axiosAPI from "../axios.js";
+import { postType, profileType } from "../Types/Feed.types";
+
 
 
 function Profile() {
   const { data: session } = useSession();
   const [profilePosts, setProfilePosts] = useState([]);
-  const [profileData, setProfileData] = useState([]);
+  const [profileData, setProfileData] = useState<profileType>();
   const router = useRouter();
   const profileDataChanged = useSelector(
-    (state) => state.global.profileDataChanged
+    (state : any) => state.global.profileDataChanged
   );
   const newUserId = router?.query?.component && router?.query?.component[1];
-  const dataChanged = useSelector((state) => state.global.dataChanged);
-  const userId =
-    newUserId || JSON.parse(window.sessionStorage.getItem("userId"))?.userId;
+  const dataChanged = useSelector((state : any  ) => state.global.dataChanged);
+  const userId: string | null =
+    newUserId || JSON.parse(window.sessionStorage.getItem("userId")??"")?.userId;
   const dispatch = useDispatch();
   useEffect(() => {
     // ----------------------   profile creation if not exists ------------------------------------
@@ -89,13 +90,11 @@ function Profile() {
           <Image
             className="rounded-full"
             layout="fill"
-            src={profileData?.userImage}
+            src={profileData?.userImage || "https://links.papareact.com/drq"}
           ></Image>
         </div>
 
-        {newUserId &&
-        JSON.parse(window.sessionStorage.getItem("userId")).useId !==
-          newUserId ? (
+        {newUserId && userId !== newUserId ? (
           ""
         ) : (
           <p
@@ -110,10 +109,7 @@ function Profile() {
       </div>
       <div
         className={` flex flex-col gap-2 pl-4 ${
-          newUserId &&
-          JSON.parse(window.sessionStorage.getItem("userId")).useId !==
-            newUserId &&
-          " pt-12  "
+          newUserId && userId !== newUserId && " pt-12  "
         }`}
       >
         <p>{profileData?.name}</p>
@@ -154,7 +150,7 @@ function Profile() {
           </div>
         </div>
       </div>
-      {profilePosts?.map((post) => (
+      {profilePosts?.map((post: postType) => (
         <DisplayTweets key={post?._id} post={post} />
       ))}
     </div>

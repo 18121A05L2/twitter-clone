@@ -3,22 +3,10 @@ import Moment from "react-moment";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import Link from "next/link";
 import Actions from "./Actions";
-import { useDispatch } from "react-redux";
 import Image from "next/image";
+import { postType } from "../../../Types/Feed.types";
 
-type postType = {
-  post: {
-    _id: string;
-    createdAt: Date;
-    userEmail: string;
-    userId: string;
-    userImage: string;
-    userName: string;
-    userInput: string;
-  };
-};
-
-function DisplayTweets({ post }: any) {
+function DisplayTweets({ post } : {post : postType} ) {
   return (
     <Link passHref href={`/${post.userId.slice(1)}/status/${post._id}`}>
       <div className="flex border-t-[0.1rem] p-2 hover:bg-gray-100">
